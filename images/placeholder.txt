@@ -1,0 +1,1 @@
+このフォルダにLPで使用する画像（hero.png、gift1.png〜gift7.png）を保存してください。
