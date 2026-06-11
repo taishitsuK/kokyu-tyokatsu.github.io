@@ -279,9 +279,6 @@ footer { padding: 40px 0; background: var(--bg-gray); color: var(--text-light); 
 .message-box p {
     margin-bottom: 20px;
     color: var(--text-main);
-    text-align: justify;
-    text-justify: inter-character;
-    word-break: break-all;
 }
 
 /* Premium Offer Section */
