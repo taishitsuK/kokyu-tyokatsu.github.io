@@ -52,23 +52,15 @@ body {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 12px;
-    padding: 16px 36px;
+    padding: 20px 44px;
     border-radius: 980px;
     text-decoration: none;
     font-weight: 700;
-    font-size: 1.25rem;
+    font-size: 1.5rem;
     transition: all 0.2s ease;
     cursor: pointer;
     border: none;
     box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-}
-
-.btn svg {
-    width: 28px;
-    height: 28px;
-    fill: currentColor;
-    flex-shrink: 0;
 }
 
 .btn-primary {
@@ -83,8 +75,8 @@ body {
 }
 
 .btn-large {
-    font-size: 1.5rem;
-    padding: 20px 48px;
+    font-size: 1.9rem;
+    padding: 26px 64px;
 }
 
 .pulse { /* パルスはあえて控えめに */ }
@@ -344,8 +336,8 @@ footer { padding: 40px 0; background: var(--bg-gray); color: var(--text-light); 
     background: linear-gradient(135deg, #0066cc 0%, #004499 100%);
     color: #ffffff;
     border: none;
-    font-size: 1.4rem;
-    padding: 20px 48px;
+    font-size: 1.8rem;
+    padding: 26px 64px;
     box-shadow: 0 8px 20px rgba(0, 102, 204, 0.4);
 }
 .btn-premium:hover {
