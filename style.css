@@ -347,3 +347,183 @@ footer { padding: 40px 0; background: var(--bg-gray); color: var(--text-light); 
     transform: translateY(-2px);
     box-shadow: 0 10px 25px rgba(0, 102, 204, 0.6);
 }
+
+/* Blue Background Box */
+.blue-bg-box {
+    background: #0055b3; /* 落ち着いたかつ鮮やかな青 */
+    color: #ffffff;
+    padding: 40px;
+    border-radius: 18px;
+    margin: 40px auto;
+    max-width: 800px;
+    text-align: left;
+    box-shadow: 0 10px 30px rgba(0, 85, 179, 0.15);
+}
+
+.blue-bg-box h3 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+    line-height: 1.4;
+}
+
+.text-red {
+    color: #ff453a; /* 青背景でも見えやすい明るい赤 */
+    font-weight: 700;
+}
+
+.text-yellow {
+    color: #ffcc00; /* 青背景でも見えやすい鮮やかな黄 */
+    font-weight: 700;
+}
+
+/* Consultation Flow Steps */
+.flow-container {
+    max-width: 800px;
+    margin: 60px auto;
+    text-align: left;
+}
+
+.flow-title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 30px;
+    text-align: center;
+    color: var(--text-main);
+}
+
+.flow-steps {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 30px;
+}
+
+.flow-step-item {
+    display: flex;
+    align-items: flex-start;
+    background: var(--bg-gray);
+    padding: 24px;
+    border-radius: 12px;
+    margin-bottom: 15px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+}
+
+.flow-step-num {
+    background: var(--accent);
+    color: white;
+    font-weight: 700;
+    font-size: 1.2rem;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 20px;
+    flex-shrink: 0;
+}
+
+.flow-step-content h4 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: var(--text-main);
+}
+
+.flow-step-content p {
+    color: var(--text-light);
+    font-size: 0.95rem;
+    margin: 0;
+}
+
+.flow-note {
+    background: #fff9e6;
+    border-left: 4px solid #ffcc00;
+    padding: 20px;
+    border-radius: 8px;
+    color: #665200;
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+
+/* Participation Conditions */
+.cond-container {
+    max-width: 800px;
+    margin: 60px auto;
+}
+
+.cond-title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.cond-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+}
+
+.cond-card {
+    background: var(--bg-light);
+    border-radius: 18px;
+    padding: 35px 30px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.03);
+    text-align: left;
+    border: 1px solid rgba(0,0,0,0.05);
+}
+
+.cond-card.reject {
+    border-top: 5px solid #ff3b30;
+}
+
+.cond-card.welcome {
+    border-top: 5px solid #34c759;
+}
+
+.cond-card h3 {
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+}
+
+.cond-card.reject h3 { color: #ff3b30; }
+.cond-card.welcome h3 { color: #34c759; }
+
+.cond-card ul {
+    list-style: none;
+    padding: 0;
+}
+
+.cond-card li {
+    position: relative;
+    padding-left: 24px;
+    margin-bottom: 12px;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    color: var(--text-main);
+}
+
+.cond-card.reject li::before {
+    content: "✖";
+    position: absolute;
+    left: 0;
+    color: #ff3b30;
+}
+
+.cond-card.welcome li::before {
+    content: "✔";
+    position: absolute;
+    left: 0;
+    color: #34c759;
+}
+
+@media (max-width: 768px) {
+    .cond-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+}
