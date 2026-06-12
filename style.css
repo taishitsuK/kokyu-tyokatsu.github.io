@@ -49,25 +49,43 @@ body {
 
 /* Buttons */
 .btn {
-    display: inline-block;
-    padding: 12px 24px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 16px 36px;
     border-radius: 980px;
     text-decoration: none;
-    font-weight: 400;
-    font-size: 1.05rem;
+    font-weight: 700;
+    font-size: 1.25rem;
     transition: all 0.2s ease;
     cursor: pointer;
     border: none;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.btn svg {
+    width: 28px;
+    height: 28px;
+    fill: currentColor;
+    flex-shrink: 0;
 }
 
 .btn-primary {
-    background: var(--accent);
+    background: #06C755; /* LINEグリーン */
     color: white;
 }
 
-.btn-primary:hover { background: #0055b3; }
+.btn-primary:hover {
+    background: #05b34c;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(6, 199, 85, 0.4);
+}
 
-.btn-large { font-size: 1.2rem; padding: 16px 32px; }
+.btn-large {
+    font-size: 1.5rem;
+    padding: 20px 48px;
+}
 
 .pulse { /* パルスはあえて控えめに */ }
 
@@ -85,19 +103,7 @@ body {
     margin: 0 auto;
 }
 
-.hero-image {
-    max-width: 680px;
-    margin: 50px auto 0 auto;
-    display: flex;
-    justify-content: center;
-}
-
-.hero-image img {
-    width: 100%;
-    height: auto;
-    border-radius: 18px;
-    box-shadow: 0 20px 40px rgba(0,0,0,0.08);
-}
+/* hero-image styles removed */
 
 .hero-title { font-size: 3.8rem; font-weight: 700; line-height: 1.2; margin-bottom: 20px; letter-spacing: -0.03em;}
 .hero-subtitle { font-size: 1.25rem; margin-bottom: 40px; color: var(--text-light); }
@@ -338,8 +344,8 @@ footer { padding: 40px 0; background: var(--bg-gray); color: var(--text-light); 
     background: linear-gradient(135deg, #0066cc 0%, #004499 100%);
     color: #ffffff;
     border: none;
-    font-size: 1.2rem;
-    padding: 18px 40px;
+    font-size: 1.4rem;
+    padding: 20px 48px;
     box-shadow: 0 8px 20px rgba(0, 102, 204, 0.4);
 }
 .btn-premium:hover {
@@ -365,6 +371,7 @@ footer { padding: 40px 0; background: var(--bg-gray); color: var(--text-light); 
     font-weight: 700;
     margin-bottom: 20px;
     line-height: 1.4;
+    color: #ffcc00; /* タイトルは黄色に固定 */
 }
 
 .text-red {
