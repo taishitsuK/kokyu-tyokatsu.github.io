@@ -64,14 +64,14 @@ body {
 }
 
 .btn-primary {
-    background: #06C755; /* LINEグリーン */
+    background: linear-gradient(135deg, #0066cc 0%, #004499 100%);
     color: white;
 }
 
 .btn-primary:hover {
-    background: #05b34c;
+    background: linear-gradient(135deg, #0055b3 0%, #003377 100%);
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(6, 199, 85, 0.4);
+    box-shadow: 0 10px 25px rgba(0, 102, 204, 0.6);
 }
 
 .btn-large {
