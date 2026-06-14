@@ -64,14 +64,14 @@ body {
 }
 
 .btn-primary {
-    background: linear-gradient(135deg, #0066cc 0%, #004499 100%);
+    background: linear-gradient(135deg, #ff3b30 0%, #c81010 100%);
     color: white;
 }
 
 .btn-primary:hover {
-    background: linear-gradient(135deg, #0055b3 0%, #003377 100%);
+    background: linear-gradient(135deg, #ff453a 0%, #b00c0c 100%);
     transform: translateY(-2px);
-    box-shadow: 0 10px 25px rgba(0, 102, 204, 0.6);
+    box-shadow: 0 10px 25px rgba(255, 59, 48, 0.6);
 }
 
 .btn-large {
@@ -333,17 +333,17 @@ footer { padding: 40px 0; background: var(--bg-gray); color: var(--text-light); 
     margin-bottom: 25px;
 }
 .btn-premium {
-    background: linear-gradient(135deg, #0066cc 0%, #004499 100%);
+    background: linear-gradient(135deg, #ff3b30 0%, #c81010 100%);
     color: #ffffff;
     border: none;
     font-size: 1.8rem;
     padding: 26px 64px;
-    box-shadow: 0 8px 20px rgba(0, 102, 204, 0.4);
+    box-shadow: 0 8px 20px rgba(255, 59, 48, 0.4);
 }
 .btn-premium:hover {
-    background: linear-gradient(135deg, #0055b3 0%, #003377 100%);
+    background: linear-gradient(135deg, #ff453a 0%, #b00c0c 100%);
     transform: translateY(-2px);
-    box-shadow: 0 10px 25px rgba(0, 102, 204, 0.6);
+    box-shadow: 0 10px 25px rgba(255, 59, 48, 0.6);
 }
 
 /* Blue Background Box */
@@ -460,8 +460,10 @@ footer { padding: 40px 0; background: var(--bg-gray); color: var(--text-light); 
 
 .cond-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr;
     gap: 30px;
+    max-width: 800px;
+    margin: 0 auto;
 }
 
 .cond-card {
@@ -507,22 +509,58 @@ footer { padding: 40px 0; background: var(--bg-gray); color: var(--text-light); 
 }
 
 .cond-card.reject li::before {
-    content: "✖";
+    content: "□";
     position: absolute;
     left: 0;
     color: #ff3b30;
+    font-weight: bold;
 }
 
 .cond-card.welcome li::before {
-    content: "✔";
+    content: "□";
     position: absolute;
     left: 0;
     color: #34c759;
+    font-weight: bold;
 }
 
 @media (max-width: 768px) {
     .cond-grid {
-        grid-template-columns: 1fr;
         gap: 20px;
     }
+}
+
+/* メッセージボックスの左枠線色変更 */
+.message-box.yellow-border {
+    border-left: 5px solid #ffcc00;
+}
+
+.message-box.red-border {
+    border-left: 5px solid #ff3b30;
+}
+
+/* 動画上の吹き出し用スタイル */
+.video-intro-bubble {
+    display: inline-block;
+    background: #ffcc00;
+    color: #1d1d1f;
+    font-weight: 900;
+    font-size: 1.3rem;
+    padding: 10px 24px;
+    border-radius: 50px;
+    position: relative;
+    margin-bottom: 25px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+.video-intro-bubble::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 10px 10px 0;
+    border-style: solid;
+    border-color: #ffcc00 transparent;
+    display: block;
+    width: 0;
 }
