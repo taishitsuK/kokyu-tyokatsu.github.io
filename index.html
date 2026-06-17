@@ -3,374 +3,230 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>1日3分で体が変わる！呼吸×腸活の完全ロードマップ</title>
+    <title>プレビューシミュレーター | 呼吸×腸活の完全ロードマップ</title>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700;900&family=Inter:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=1.0.7">
+    <style>
+        :root {
+            --bg-color: #0f0f11;
+            --panel-bg: rgba(255, 255, 255, 0.08);
+            --panel-border: rgba(255, 255, 255, 0.12);
+            --text-color: #f5f5f7;
+            --accent-color: #0066cc;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', 'Noto Sans JP', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* コントロールパネル */
+        .control-panel {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1000;
+            background: var(--panel-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--panel-border);
+            padding: 6px;
+            border-radius: 40px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .btn-toggle {
+            background: transparent;
+            border: none;
+            color: #86868b;
+            padding: 8px 18px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            border-radius: 30px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        .btn-toggle:hover {
+            color: var(--text-color);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .btn-toggle.active {
+            color: #ffffff;
+            background: var(--accent-color);
+            box-shadow: 0 4px 12px rgba(0, 102, 204, 0.3);
+        }
+
+        /* プレビュー表示エリア */
+        .viewport-container {
+            flex-grow: 1;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            background-color: #1c1c1e;
+            background-image: radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 0);
+            background-size: 24px 24px;
+            transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+            padding: 0;
+        }
+
+        /* iframeのラッパー（デバイスフレーム） */
+        .device-wrapper {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            max-width: 100%;
+            max-height: 100%;
+            transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* PCモード時のスタイル */
+        .device-wrapper.mode-pc {
+            width: 100%;
+            height: 100%;
+            border: none;
+            border-radius: 0;
+            box-shadow: none;
+        }
+
+        /* スマホモード時のスタイル */
+        .device-wrapper.mode-sp {
+            width: 375px;
+            height: 812px;
+            border: 12px solid #000000;
+            border-radius: 40px;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8);
+            background: #000;
+        }
+
+        .device-wrapper.mode-sp::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 150px;
+            height: 25px;
+            background: #000000;
+            border-bottom-left-radius: 15px;
+            border-bottom-right-radius: 15px;
+            z-index: 10;
+        }
+
+        .device-wrapper.mode-sp::after {
+            content: '';
+            position: absolute;
+            bottom: 5px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 130px;
+            height: 5px;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 10px;
+            z-index: 10;
+        }
+
+        .preview-iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            background: #ffffff;
+            transition: border-radius 0.5s ease;
+        }
+
+        .device-wrapper.mode-pc .preview-iframe {
+            border-radius: 0;
+        }
+
+        .device-wrapper.mode-sp .preview-iframe {
+            border-radius: 28px;
+        }
+
+        /* デモ注記 */
+        .demo-notice {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.75);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            color: #86868b;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            z-index: 1000;
+            pointer-events: none;
+        }
+    </style>
 </head>
 <body>
-    <!-- 3日間カウントダウンバー -->
-    <div id="countdown-bar" class="countdown-bar">
-        <span>無料公開終了まで あと <strong id="timer" class="timer-text">72:00:00</strong></span>
+
+    <div class="control-panel">
+        <button id="btn-pc" class="btn-toggle active" onclick="setMode('pc')">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+            PC表示
+        </button>
+        <button id="btn-sp" class="btn-toggle" onclick="setMode('sp')">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg>
+            スマホ表示
+        </button>
     </div>
 
-    <!-- 1. ヒーローセクション -->
-    <header class="hero" style="padding: 80px 0 60px 0;">
-        <div class="container text-center">
-            <div class="hero-content">
-                <span class="badge" style="color: #ff3b30; font-size: 1.6rem; font-weight: 900; letter-spacing: 0.1em; border: 2px solid #ff3b30; padding: 4px 16px; border-radius: 6px; margin-bottom: 25px; display: inline-block; background: transparent; box-shadow: none;">重要</span>
-                <h1 class="hero-title">「寝ても取れない疲労」<br class="pc-only">は<span class="highlight">呼吸と腸</span>でリセットする</h1>
-            </div>
-        </div>
-        <div class="hero-bg-effect"></div>
-    </header>
-    <section class="video-section" style="padding: 20px 0;">
-        <div class="container text-center">
-            <p style="font-size: 1.4rem; font-weight: 700; color: var(--text-main); margin-bottom: 15px;">このプレミアム動画特典をご覧いただく前に…</p>
-            
-            <!-- 2 & 3. 警告メッセージエリア (フォントサイズ拡大) -->
-            <div class="blue-bg-box" style="background-color: #0055b3; border-radius: 12px; margin: 10px auto 35px auto; max-width: 800px; padding: 25px 30px; box-shadow: 0 8px 25px rgba(0, 85, 179, 0.15);">
-                <p style="font-size: 1.35rem; line-height: 1.7; margin-bottom: 0; font-weight: 700; color: #ffffff; text-align: left;">このページは<span class="text-yellow">3日後</span>に削除します。<br>削除後は特別なご案内も受付終了となりますので、注意深く文章と動画の<br>内容をご覧ください。<br>非常に重要な内容となっております。<br><span style="font-size: 1.15rem; opacity: 0.9; display: block; margin-top: 10px; font-weight: 700;">※時間経過後はリンクへのアクセスが一切できなくなります。</span></p>
-            </div>
-
-            <div class="video-container" style="margin-top: 35px; margin-bottom: 40px;">
-                <!-- ここにYouTubeの埋め込みコード（iframe）を貼り付けてください -->
-                <iframe width="560" height="315" src="https://www.youtube.com/embed/tHopXNAFDM4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-            </div>
-
-            <!-- 動画下のリンクボタン -->
-            <div style="text-align: center; margin-top: 20px; margin-bottom: 40px;">
-                <div class="btn-tooltip-bubble">極秘の超豪華7大特典がもらえる</div><br>
-                <a href="PREMIUM_LINE_URL_PLACEHOLDER" class="btn btn-premium pulse">プレミアム個別相談会へはコチラ</a>
-                <p style="font-size: 0.9rem; color: #ff3b30; font-weight: 700; margin-top: 12px; text-align: center;">※3日間のカウントダウンタイマーが終了すると個別相談への申込ができなくなります</p>
-            </div>
-
-            <!-- ③ 新規見出しテキスト -->
-            <div style="margin: 35px auto 30px auto; text-align: center; line-height: 1.6;">
-                <p style="font-size: 1.4rem; font-weight: 700; color: var(--text-main); margin-bottom: 12px;">＼現役理学療法士が提案／</p>
-                <h2 style="font-size: 2.2rem; font-weight: 900; color: #ff3b30; margin-bottom: 12px; letter-spacing: -0.02em; line-height: 1.3;">呼吸×腸活で体質改善を促す<br>プレミアム個別相談会</h2>
-                <p style="font-size: 1.6rem; font-weight: 700; color: var(--text-main);">へご招待します</p>
-            </div>
-
-            <!-- ①, ② 移動および改行・サイズ調整された紹介文テキスト -->
-            <div class="consultation-intro-text" style="max-width: 800px; margin: 40px auto; text-align: left; padding: 0 20px; line-height: 1.8; color: var(--text-main);">
-                <p style="font-size: 1.3rem; font-weight: 700; margin-bottom: 25px; text-align: center; line-height: 1.8;">
-                    長年抱え続けてきた慢性的な不調を改善する<br>
-                    <span style="font-size: 1.65rem; color: var(--accent);">「呼吸×腸活」</span>の極秘メソッドを大公開！<br>
-                    その人の体質に合った完全オーダーメイド型プレミアム個別相談会
-                </p>
-                <p style="font-size: 1.1rem; margin-bottom: 25px; line-height: 1.8; text-align: center;">
-                    「もっと具体的な健康法を知りたい」「自分の体質に合った最短ルートを知りたい」<br>
-                    という方へ。<br>
-                    あなたの現状をヒアリングし、あなた専用のオリジナル体質改善ロードマップを作成する<br>
-                    <strong>一対一</strong>の相談会です。
-                </p>
-                <p style="font-size: 1.35rem; font-weight: 900; text-align: center; line-height: 1.8;">
-                    あなたの疑問・質問に僕が全てお答えする権利を<br>
-                    今すぐ無料で手に入れてください。
-                </p>
-            </div>
-
-            <!-- ⑤, ⑥ ボタンの上下に吹き出しと注意書き -->
-            <div style="text-align: center; margin-top: 30px;">
-                <div class="btn-tooltip-bubble">極秘の超豪華7大特典がもらえる</div><br>
-                <a href="PREMIUM_LINE_URL_PLACEHOLDER" class="btn btn-premium pulse">プレミアム個別相談会へはコチラ</a>
-                <p style="font-size: 0.9rem; color: #ff3b30; font-weight: 700; margin-top: 12px; text-align: center;">※3日間のカウントダウンタイマーが終了すると個別相談への申込ができなくなります</p>
-        </div>
-
-
-    </section>
-
-
-    <!-- 6. 7大特典の紹介グリッド -->
-    <section class="gifts" style="padding: 60px 0;">
-        <div class="container text-center">
-            <p style="font-size: 1.4rem; font-weight: 700; color: #ff3b30; margin-bottom: 15px;"><strong>さらに</strong>個別相談会の参加者限定特典として</p>
-            <h2 class="section-title">今日から実践できる！<br>超豪華7大特典を無料プレゼント</h2>
-            <p class="gifts-subtitle">あなたの体質改善を強力にサポートするオリジナルツールを無料でご提供します。</p>
-            
-            <div class="grid gifts-grid">
-                <div class="gift-card">
-                    <div class="gift-image">
-                        <img src="images/gift1.png" alt="特典1のサムネイル">
-                    </div>
-                    <div class="gift-badge">特典 1</div>
-                    <h3>確実に体が変わる！<br>呼吸×腸活の完全ロードマップ</h3>
-                    <p>体質改善のステップを網羅した全体マニュアル</p>
-                </div>
-                <div class="gift-card">
-                    <div class="gift-image">
-                        <img src="images/gift2.png" alt="特典2のサムネイル">
-                    </div>
-                    <div class="gift-badge">特典 2</div>
-                    <h3>まずはこれだけ！<br>呼吸×腸活の入門書</h3>
-                    <p>忙しい人でも今日からすぐに始められる<br>最もシンプルな実践スタートガイド</p>
-                </div>
-                <div class="gift-card">
-                    <div class="gift-image">
-                        <img src="images/gift3.png" alt="特典3のサムネイル">
-                    </div>
-                    <div class="gift-badge">特典 3</div>
-                    <h3>99%が知らない！<br>体質が変わる呼吸の正解</h3>
-                    <p>自律神経を整え疲労をその場でリセットする<br>正しい呼吸法の実践解説書</p>
-                </div>
-                <div class="gift-card">
-                    <div class="gift-image">
-                        <img src="images/gift4.png" alt="特典4のサムネイル">
-                    </div>
-                    <div class="gift-badge">特典 4</div>
-                    <h3>腸の声を聴く！<br>体質改善を成功させる最短ルート</h3>
-                    <p>腸活の基本を押さえたもっとも簡単な実践マニュアル</p>
-                </div>
-                <div class="gift-card">
-                    <div class="gift-image">
-                        <img src="images/gift5.png" alt="特典5のサムネイル">
-                    </div>
-                    <div class="gift-badge">特典 5</div>
-                    <h3>東洋医学で見つける！<br>体質チェックリスト</h3>
-                    <p>東洋医学のタイプから現在の体質と不調の原因を特定するチェック表</p>
-                </div>
-                <div class="gift-card">
-                    <div class="gift-image">
-                        <img src="images/gift6.png" alt="特典6のサムネイル">
-                    </div>
-                    <div class="gift-badge">特典 6</div>
-                    <h3>隠れ不調を狙い撃ち！<br>一生使える「舌診」セルフチェック</h3>
-                    <p>毎朝鏡で舌を見るだけで、その日の健康状態とエラーがひと目でわかる図解シート</p>
-                </div>
-                <div class="gift-card">
-                    <div class="gift-image">
-                        <img src="images/gift7.png" alt="特典7のサムネイル">
-                    </div>
-                    <div class="gift-badge">特典 7</div>
-                    <h3>健康情報の迷子を卒業！自分に合う<br>「正解」が見つかる健康法診断シート</h3>
-                    <p>体質を入力するだけで、おすすめの食事や生活習慣を自動で割り出すセルフ診断ツール</p>
-                </div>
-            </div>
-
-            <!-- 追加されたボタン -->
-            <div style="text-align: center; margin-top: 50px;">
-                <div class="btn-tooltip-bubble">極秘の超豪華7大特典がもらえる</div><br>
-                <a href="LINE_URL_PLACEHOLDER" class="btn btn-primary btn-large pulse">無料で7大特典を受け取る</a>
-                <p style="font-size: 0.9rem; color: #ff3b30; font-weight: 700; margin-top: 12px; text-align: center;">※3日間のカウントダウンタイマーが終了すると個別相談への申込ができなくなります</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- 7. プレミアム個別相談会の流れ -->
-    <section class="flow-container">
-        <h2 class="flow-title">プレミアム個別相談会の流れ</h2>
-        <ol class="flow-steps">
-            <li class="flow-step-item">
-                <div class="flow-step-num">1</div>
-                <div class="flow-step-content">
-                    <h4>現状のお体のお悩みや課題をヒアリング</h4>
-                    <p>現在の生活習慣や体調のエラー、お悩みを丁寧にお聞きします。</p>
-                </div>
-            </li>
-            <li class="flow-step-item">
-                <div class="flow-step-num">2</div>
-                <div class="flow-step-content">
-                    <h4>その人に合ったオーダーメイドの解決策を提示</h4>
-                    <p>あなたの体質に合わせた、最も効果的で具体的な改善アプローチをご案内します。</p>
-                </div>
-            </li>
-            <li class="flow-step-item">
-                <div class="flow-step-num">3</div>
-                <div class="flow-step-content">
-                    <h4>相談会終了および特典の配布</h4>
-                    <p>一対一の相談会が終了した段階で、超豪華7大特典をすべてお渡しします。</p>
-                </div>
-            </li>
-            <li class="flow-step-item">
-                <div class="flow-step-num">4</div>
-                <div class="flow-step-content">
-                    <h4>講座のご案内（希望者のみ）</h4>
-                    <p>さらに深く学びたい方に向けて、体質改善プレミアム講座（モニター生）のご案内をいたします。</p>
-                </div>
-            </li>
-        </ol>
-        <div class="flow-note">
-            <p style="margin-bottom: 10px; font-weight: 700; color: #665200;">※講座（モニター生）のご案内は希望者のみになります。</p>
-            <p style="margin-bottom: 10px; color: #665200;">参加者限定の7大特典目的でのご参加でも全く問題ありません。ぜひお気軽にご参加ください。</p>
-            <p style="margin-bottom: 0; font-weight: 700; color: #665200;">ぜひお気軽にご参加ください。</p>
-        </div>
-    </section>
-
-    <!-- 8. 参加条件（対象外の方・おすすめの方） -->
-    <section class="cond-container">
-        <h2 class="cond-title">プレミアム個別相談会の参加条件</h2>
-        <div class="cond-grid">
-            <div class="cond-card reject">
-                <h3>プレミアム個別相談会の対象外となる方</h3>
-                <ul>
-                    <li>目標もなく健康になりたいと思っている方</li>
-                    <li>いつか健康になれたらいいや。くらいの軽い気持ちの方</li>
-                    <li>飲めば健康になるといった健康食品・サプリメントを販売する予定の方</li>
-                    <li>短期間で健康になりたい方</li>
-                    <li>とりあえず予約枠だけ取っとこう。くらいの気持ちの方</li>
-                </ul>
-                <p style="color: #ff3b30; font-weight: 700; margin-top: 20px; font-size: 1.1rem; text-align: left;">これらに当てはまる方は相談会への申し込みはご遠慮ください。</p>
-            </div>
-            <div class="cond-card welcome">
-                <h3>プレミアム個別相談会がお勧めの方</h3>
-                <ul>
-                    <li>なんとなく日々の疲れが取れないという方</li>
-                    <li>色々な健康法を試したが、効果が出ないという方</li>
-                    <li>30代に入ってから慢性的にしんどいという方</li>
-                    <li>将来、病気になって家族に迷惑をかけたくないという方</li>
-                    <li>自律神経失調症と医師から診断を受けている方</li>
-                </ul>
-                <p style="color: #34c759; font-weight: 700; margin-top: 20px; font-size: 1.1rem; text-align: left;">これらに当てはまる方にはオススメとなります。</p>
-            </div>
-            
-            <!-- 追加されたボタン -->
-            <div style="text-align: center; margin-top: 40px;">
-                <div class="btn-tooltip-bubble">極秘の超豪華7大特典がもらえる</div><br>
-                <a href="PREMIUM_LINE_URL_PLACEHOLDER" class="btn btn-premium pulse">プレミアム個別相談会へはコチラ</a>
-                <p style="font-size: 0.9rem; color: #ff3b30; font-weight: 700; margin-top: 12px; text-align: center;">※3日間のカウントダウンタイマーが終了すると個別相談への申込ができなくなります</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- 9. なぜこのコンテンツを作ったのか -->
-    <section class="founder-message" style="padding: 60px 0 30px 0;">
-        <div class="container">
-            <h2 class="section-title text-center">なぜこのコンテンツを作ったのか</h2>
-            <div class="message-box">
-                <!-- ＝＝＝ ここに想いやエピソードの文章を入力します ＝＝＝ -->
-                <p style="font-weight: 700; margin-bottom: 8px; color: var(--text-main);">実際に、僕も昔は慢性的な不調を抱えていました</p>
-                <p>20代後半から仕事の疲れが取れない、休日になっても気力が沸かずに寝てばかり、交友関係や自分のやりたいことにさえ疎かになってしまう始末でした。</p>
-                <p>30代になってからはそれに拍車をかけるように慢性的に不調を感じるようになりました。風邪もひきやすくなり、一年中何かの不調に悩まされる日々が続きました。</p>
-                <p>「もう30代だし、この不調は仕方ないものなのか」<br>
-                「一生、この重だるい体と付き合っていくしかないのか」<br>
-                と絶望していました。</p>
-
-                <p style="font-weight: 700; margin-top: 32px; margin-bottom: 8px; color: var(--text-main);">そんなボロボロの僕の体と人生を変えてくれたきっかけ</p>
-                <p>とある勉強会で学んだ「東洋医学の考え方」と、僕自身が培ってきた「呼吸療法認定士としての知識」の融合でした。</p>
-                <p>さらに、どんな体質の人であっても絶対に飛ばしてはいけない『体質改善の絶対ルール』があることに気づきました。</p>
-                <p>それが、「呼吸」で自律神経の土台を作り、その後に「腸」を整えるという順番です。</p>
-                <!-- ＝＝＝ ここまで ＝＝＝ -->
-            </div>
-        </div>
-    </section>
-
-    <!-- 新設：圧倒的な活力の体験談セクション -->
-    <section class="founder-message" style="padding: 0 0 30px 0;">
-        <div class="container">
-            <h2 class="section-title text-center">「圧倒的な活力」を取り戻した瞬間</h2>
-            <div class="message-box yellow-border">
-                <p>自分の体質に合わせてこの「呼吸と腸活」を数ヶ月実践してみた結果、私自身もビックリしたのですが……<br>
-                あれだけ何をしても取れなかった慢性疲労が消え、朝スッキリと目覚められるようになり、20代の頃のような「圧倒的な活力」を取り戻すことに成功したんです。<br>
-                今では、仕事のパフォーマンスも上がり、休日は趣味や家族との時間をフルパワーで楽しめるようになりました。</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- 10. なぜ無料なのか -->
-    <section class="founder-message" style="padding: 0 0 60px 0;">
-        <div class="container">
-            <h2 class="section-title text-center">なぜ無料なのか</h2>
-            <div class="message-box red-border">
-                <!-- ＝＝＝ ここに想いやエピソードの文章を入力します ＝＝＝ -->
-                <p>僕自身がボロボロだった頃に「一番受けたかった内容」を届けることで、間違った順番の健康法やサプリで挫折する人を一人でも減らしたいという思いがあるからです。</p>
-                <p>そして、この無料相談会で最大の価値提供をすることで、僕自身の認知や口コミが広がり、結果的に長期的な信頼に繋がります。</p>
-                <p>さらに, もし無料で体験して本物の価値を感じてもらえたなら、本気の人には僕の有料講座も受けてほしい。だからこそ、お互いに一番得をする形として全力の価値提供を無料で行っています。</p>
-                <p>有料講座は購入せず、個別相談会だけでも全く構いませんのでお気軽にご受講ください。</p>
-                <!-- ＝＝＝ ここまで ＝＝＝ -->
-            </div>
-        </div>
-    </section>
-
-    <section id="cta" class="cta">
-        <div class="container text-center">
-            <h2 style="font-size: 2rem; font-weight: 400; letter-spacing: 0;">人数が埋まり次第受付終了となります。</h2>
-            <p>これらの豪華特典は、以下のボタンから無料で受け取ることができます。</p>
-            <p style="font-size: 0.9rem; margin-top: -20px; margin-bottom: 35px;">※予告なく配布を終了する場合がありますのでお早めにお受け取りください。</p>
-            
-            <div style="text-align: center; margin-top: 20px; margin-bottom: 30px;">
-                <div class="btn-tooltip-bubble">極秘の超豪華7大特典がもらえる</div><br>
-                <a href="LINE_URL_PLACEHOLDER" class="btn btn-primary btn-large pulse">無料で7大特典を受け取る</a>
-                <p style="font-size: 0.9rem; color: #ff3b30; font-weight: 700; margin-top: 12px; text-align: center;">※3日間のカウントダウンタイマーが終了すると個別相談への申込ができなくなります</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- 開発者プロフィール (けい) -->
-    <section class="profile-section" style="padding: 60px 0 20px 0;">
-        <div class="container">
-            <div class="profile-card">
-                <div class="profile-avatar-wrapper">
-                    <img src="images/avatar_kei.png" alt="けい" class="profile-avatar">
-                </div>
-                <div class="profile-content">
-                    <div class="profile-label">PROFILE</div>
-                    <h3 class="profile-name">けい</h3>
-                    <div class="profile-badges">
-                        <span class="profile-badge">理学療法士</span>
-                        <span class="profile-badge">呼吸療法認定士</span>
-                        <span class="profile-badge">東洋医学セラピスト</span>
-                    </div>
-                    <div class="profile-intro">
-                        自分自身がボロボロだったからこそ、たどり着いた「呼吸×腸活」の極意
-                    </div>
-                    <div class="profile-text">
-                        <p>僕自身、20代後半から常に体が重だるく、慢性的な不調に悩まされ続けていました。30代に入るとさらに悪化し、寝ても疲れが取れず、毎日「しんどい…」と感じてばかりのボロボロな状態でした。</p>
-                        <p>「このまま一生、不調と付き合っていくしかないのか」と絶望する中、リハビリのプロとしての知識に加えて、東洋医学の勉強と呼吸生理学の知識を融合させ、自らの体質改善に本気でチャレンジしました。</p>
-                        <p>そこで気づいたのは、体質改善には何よりもまず<span class="profile-text-highlight">「呼吸」によって身体の自律神経の土台を作る</span>ことが不可欠であるということ。そして、その土台が整った後に<span class="profile-text-bold">「簡単な腸活」を組み合わせる</span>ことで、初めて体が劇的に変わるという真実でした。</p>
-                        <p>実際にこのメソッドを実践した結果、長年の慢性的な疲労感が消え去っただけでなく、長年悩んでいた<span class="profile-text-bold">花粉症、胃腸の弱さ、風邪をひきやすい体質を克服</span>。さらに、理学療法士でありながら慢性化していた<span class="profile-text-bold">肩こりや腰痛までもが綺麗に改善</span>したのです。</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- 申し込みに関してのご相談 公式LINEバナー (緑背景) -->
-    <div style="background-color: #06C755; color: #ffffff; padding: 40px 20px; text-align: center; margin-top: 60px;">
-        <div class="container" style="max-width: 800px;">
-            <h3 style="font-size: 1.6rem; font-weight: 700; margin-bottom: 12px; color: #ffffff;">申し込みに関してのご相談は公式LINEからご連絡ください</h3>
-            <p style="font-size: 1.15rem; line-height: 1.6; margin-bottom: 0; opacity: 0.95;">不明な点や聞いておきたいことがあれば、公式LINEからいつでもご連絡ください。</p>
+    <div class="viewport-container" id="viewport">
+        <div class="device-wrapper mode-pc" id="device-wrapper">
+            <iframe src="lp.html" class="preview-iframe" id="preview-iframe"></iframe>
         </div>
     </div>
 
-    <footer>
-        <div class="container text-center">
-            <p>&copy; 2026 呼吸×腸活メソッド All Rights Reserved.</p>
-        </div>
-    </footer>
+    <div class="demo-notice">
+        ※この切り替え機能はデモ確認用です。本番公開時は lp.html をそのまま index.html としてご使用いただけます。
+    </div>
 
-    <!-- カウントダウン用JavaScript -->
     <script>
-        const HOURS_72 = 72 * 60 * 60 * 1000;
-        const timerElement = document.getElementById('timer');
-        const countdownBar = document.getElementById('countdown-bar');
+        function setMode(mode) {
+            const wrapper = document.getElementById('device-wrapper');
+            const btnPc = document.getElementById('btn-pc');
+            const btnSp = document.getElementById('btn-sp');
+            const viewport = document.getElementById('viewport');
 
-        function updateTimer() {
-            let startTime = localStorage.getItem('lp_start_time_v1');
-            if (!startTime) {
-                startTime = new Date().getTime();
-                localStorage.setItem('lp_start_time_v1', startTime);
-            }
-
-            const now = new Date().getTime();
-            const elapsed = now - parseInt(startTime);
-            const remaining = Math.max(0, HOURS_72 - elapsed);
-
-            const days = Math.floor(remaining / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((remaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((remaining % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((remaining % (1000 * 60)) / 1000);
-
-            timerElement.textContent = `${days}日 ${hours.toString().padStart(2, '0')}時間 ${minutes.toString().padStart(2, '0')}分 ${seconds.toString().padStart(2, '0')}秒`;
-
-            if (remaining > 0) {
-                requestAnimationFrame(updateTimer);
-            } else {
-                timerElement.textContent = "公開は終了しました";
-                // 終了時の処理（バーを隠すなど）
-                // countdownBar.style.display = 'none'; 
+            if (mode === 'pc') {
+                wrapper.className = 'device-wrapper mode-pc';
+                btnPc.classList.add('active');
+                btnSp.classList.remove('active');
+                viewport.style.padding = '0';
+            } else if (mode === 'sp') {
+                wrapper.className = 'device-wrapper mode-sp';
+                btnSp.classList.add('active');
+                btnPc.classList.remove('active');
+                viewport.style.padding = '40px 20px';
             }
         }
-        updateTimer();
+        
+        setMode('pc');
     </script>
 </body>
 </html>

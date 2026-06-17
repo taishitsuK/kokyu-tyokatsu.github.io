@@ -348,14 +348,27 @@ footer { padding: 40px 0; background: var(--bg-gray); color: var(--text-light); 
 
 /* Blue Background Box */
 .blue-bg-box {
-    background: #0055b3; /* 落ち着いたかつ鮮やかな青 */
-    color: #ffffff;
-    padding: 40px;
-    border-radius: 18px;
-    margin: 40px auto;
+    background-color: #0055b3;
+    border-radius: 12px;
+    margin: 10px auto 35px auto;
     max-width: 800px;
+    padding: 25px 30px;
+    box-shadow: 0 8px 25px rgba(0, 85, 179, 0.15);
+    color: #ffffff;
     text-align: left;
-    box-shadow: 0 10px 30px rgba(0, 85, 179, 0.15);
+}
+.blue-bg-box p {
+    font-size: 1.35rem;
+    line-height: 1.7;
+    margin-bottom: 0;
+    font-weight: 700;
+}
+.blue-bg-box-note {
+    font-size: 1.15rem;
+    opacity: 0.9;
+    display: block;
+    margin-top: 10px;
+    font-weight: 700;
 }
 
 .blue-bg-box h3 {
@@ -674,5 +687,71 @@ footer { padding: 40px 0; background: var(--bg-gray); color: var(--text-light); 
         border-top: 2px solid var(--accent);
         padding-left: 0;
         padding-top: 15px;
+    }
+}
+
+/* Consultation Intro Text */
+.consultation-intro-text {
+    max-width: 800px;
+    margin: 40px auto;
+    text-align: left;
+    padding: 0 20px;
+    line-height: 1.8;
+    color: var(--text-main);
+}
+.consultation-intro-text p {
+    text-align: center;
+    line-height: 1.8;
+}
+.consultation-intro-text p.intro-lead {
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-bottom: 25px;
+}
+.consultation-intro-text p.intro-lead span.accent-text {
+    font-size: 1.65rem;
+    color: var(--accent);
+}
+.consultation-intro-text p.intro-body {
+    font-size: 1.1rem;
+    margin-bottom: 25px;
+}
+.consultation-intro-text p.intro-footer {
+    font-size: 1.35rem;
+    font-weight: 900;
+}
+
+/* Additional Responsive Optimizations */
+@media (max-width: 768px) {
+    .blue-bg-box {
+        padding: 20px 15px;
+        margin: 10px 10px 25px 10px;
+    }
+    .blue-bg-box p {
+        font-size: 1.15rem;
+        line-height: 1.6;
+    }
+    .blue-bg-box-note {
+        font-size: 0.95rem;
+    }
+    .consultation-intro-text {
+        padding: 0 15px;
+        margin: 30px auto;
+    }
+    .consultation-intro-text p.intro-lead {
+        font-size: 1.1rem;
+    }
+    .consultation-intro-text p.intro-lead span.accent-text {
+        font-size: 1.35rem;
+    }
+    .consultation-intro-text p.intro-body {
+        font-size: 0.95rem;
+    }
+    .consultation-intro-text p.intro-footer {
+        font-size: 1.15rem;
+    }
+    /* 見出し類のスマホ対応調整 */
+    .video-section h2 {
+        font-size: 1.6rem !important;
     }
 }
