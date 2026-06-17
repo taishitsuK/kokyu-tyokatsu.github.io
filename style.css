@@ -154,13 +154,13 @@ body {
     overflow: hidden;
     border-radius: 12px;
     margin-bottom: 20px;
-    background: #f0f0f0;
+    background: #ffffff;
 }
 
 .gift-image img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
     transition: transform 0.3s ease;
 }
 
@@ -753,5 +753,14 @@ footer { padding: 40px 0; background: var(--bg-gray); color: var(--text-light); 
     /* 見出し類のスマホ対応調整 */
     .video-section h2 {
         font-size: 1.6rem !important;
+    }
+    /* ボタンのスマホ対応調整 */
+    .btn-premium {
+        font-size: 1.1rem !important;
+        padding: 14px 28px !important;
+    }
+    /* 特典画像のスマホ時高さ調整 */
+    .gift-image {
+        height: 160px;
     }
 }
