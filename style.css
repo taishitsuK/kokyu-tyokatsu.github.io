@@ -239,6 +239,21 @@ footer { padding: 40px 0; background: var(--bg-gray); color: var(--text-light); 
     padding: 100px 0;
     background: var(--bg-light);
 }
+.consultation-title {
+    font-size: 2.2rem;
+    font-weight: 900;
+    color: #ff3b30;
+    margin-bottom: 12px;
+    letter-spacing: -0.02em;
+    line-height: 1.3;
+}
+.cta-title {
+    font-size: 2rem;
+    font-weight: 400;
+    letter-spacing: 0;
+    margin-bottom: 35px;
+    line-height: 1.4;
+}
 .video-container {
     position: relative;
     padding-bottom: 56.25%; /* 16:9 */
@@ -753,6 +768,15 @@ footer { padding: 40px 0; background: var(--bg-gray); color: var(--text-light); 
     /* 見出し類のスマホ対応調整 */
     .video-section h2 {
         font-size: 1.6rem !important;
+    }
+    .consultation-title {
+        font-size: 1.4rem !important;
+    }
+    .section-title {
+        font-size: 1.5rem !important;
+    }
+    .cta-title {
+        font-size: 1.4rem !important;
     }
     /* ボタンのスマホ対応調整 */
     .btn-premium {
