@@ -770,7 +770,7 @@ footer { padding: 40px 0; background: var(--bg-gray); color: var(--text-light); 
         font-size: 1.6rem !important;
     }
     .consultation-title {
-        font-size: 1.4rem !important;
+        font-size: 1.2rem !important;
     }
     .section-title {
         font-size: 1.5rem !important;
@@ -781,7 +781,7 @@ footer { padding: 40px 0; background: var(--bg-gray); color: var(--text-light); 
     /* ボタンのスマホ対応調整 */
     .btn-premium {
         font-size: 0.85rem !important;
-        padding: 12px 18px !important;
+        padding: 14px 60px !important;
         white-space: nowrap !important;
     }
     /* 特典画像のスマホ時高さ調整 */
