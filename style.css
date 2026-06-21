@@ -52,7 +52,7 @@ body {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding: 20px 44px;
+    padding: 26px 44px;
     border-radius: 980px;
     text-decoration: none;
     font-weight: 700;
@@ -76,7 +76,7 @@ body {
 
 .btn-large {
     font-size: 1.9rem;
-    padding: 26px 64px;
+    padding: 32px 64px;
 }
 
 .pulse { /* パルスはあえて控えめに */ }
@@ -188,28 +188,13 @@ body {
 /* Footer */
 footer { padding: 40px 0; background: var(--bg-gray); color: var(--text-light); border-top: 1px solid rgba(0,0,0,0.05);}
 
-@media (max-width: 768px) {
-    .hero {
-        padding: 80px 0 60px 0;
-    }
-    .hero-image {
-        max-width: 100%;
-        margin-top: 40px;
-    }
-    .hero-title { font-size: 1.8rem; }
-    .section-title { font-size: 2rem; }
-    .btn-large { padding: 14px 28px; font-size: 1.1rem; }
-    .solution-content { padding: 0 20px; }
-}
+
 
 /* Utility Classes for Responsive Breaks */
 .pc-only { display: inline; }
 .sp-only { display: none; }
 
-@media (max-width: 768px) {
-    .pc-only { display: none; }
-    .sp-only { display: inline; }
-}
+
 
 /* Countdown Bar */
 .countdown-bar {
@@ -352,7 +337,7 @@ footer { padding: 40px 0; background: var(--bg-gray); color: var(--text-light); 
     color: #ffffff;
     border: none;
     font-size: 1.8rem;
-    padding: 26px 64px;
+    padding: 32px 64px;
     box-shadow: 0 8px 20px rgba(255, 59, 48, 0.4);
 }
 .btn-premium:hover {
@@ -552,11 +537,7 @@ footer { padding: 40px 0; background: var(--bg-gray); color: var(--text-light); 
     font-weight: bold;
 }
 
-@media (max-width: 768px) {
-    .cond-grid {
-        gap: 20px;
-    }
-}
+
 
 /* メッセージボックスの左枠線色変更 */
 .message-box.yellow-border {
@@ -683,27 +664,7 @@ footer { padding: 40px 0; background: var(--bg-gray); color: var(--text-light); 
     font-weight: 700;
 }
 
-@media (max-width: 768px) {
-    .profile-card {
-        flex-direction: column;
-        align-items: center;
-        text-align: center;
-        padding: 30px 20px;
-        gap: 30px;
-    }
-    .profile-content {
-        text-align: center;
-    }
-    .profile-badges {
-        justify-content: center;
-    }
-    .profile-intro {
-        border-left: none;
-        border-top: 2px solid var(--accent);
-        padding-left: 0;
-        padding-top: 15px;
-    }
-}
+
 
 /* Consultation Intro Text */
 .consultation-intro-text {
@@ -736,62 +697,4 @@ footer { padding: 40px 0; background: var(--bg-gray); color: var(--text-light); 
     font-weight: 900;
 }
 
-/* Additional Responsive Optimizations */
-@media (max-width: 768px) {
-    .blue-bg-box {
-        padding: 20px 15px;
-        margin: 10px 10px 25px 10px;
-    }
-    .blue-bg-box p {
-        font-size: 1.15rem;
-        line-height: 1.6;
-    }
-    .blue-bg-box-note {
-        font-size: 0.95rem;
-    }
-    .consultation-intro-text {
-        padding: 0 15px;
-        margin: 30px auto;
-    }
-    .consultation-intro-text p.intro-lead {
-        font-size: 1.1rem;
-    }
-    .consultation-intro-text p.intro-lead span.accent-text {
-        font-size: 1.35rem;
-    }
-    .consultation-intro-text p.intro-body {
-        font-size: 0.95rem;
-    }
-    .consultation-intro-text p.intro-footer {
-        font-size: 1.15rem;
-    }
-    /* 見出し類のスマホ対応調整 */
-    .video-section h2 {
-        font-size: 1.6rem !important;
-    }
-    .video-section .consultation-title {
-        font-size: 1.3rem !important;
-        line-height: 1.4 !important;
-    }
-    .video-section .consultation-title .title-sub {
-        font-size: 1.15rem !important;
-        letter-spacing: -0.04em !important;
-        display: inline-block;
-    }
-    .section-title {
-        font-size: 1.5rem !important;
-    }
-    .cta-title {
-        font-size: 1.4rem !important;
-    }
-    /* ボタンのスマホ対応調整 */
-    .btn-premium {
-        font-size: 1.05rem !important;
-        padding: 14px 40px !important;
-        white-space: nowrap !important;
-    }
-    /* 特典画像のスマホ時高さ調整 */
-    .gift-image {
-        height: 160px;
-    }
-}
+
